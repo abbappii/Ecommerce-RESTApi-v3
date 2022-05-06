@@ -1,5 +1,4 @@
-from operator import mod
-from pyexpat import model
+
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -39,4 +38,41 @@ class Product(models.Model):
     def __str__(self):
         return self.title
     
+
+class Cart(models.Model):
+    customer = models.ForeignKey(Profile,on_delete=models.CASCADE)
+    total = models.PositiveIntegerField()
+    complete = models.BooleanField(default=False)
     
+    created_at = models.DateTimeField(auto_now_add=True)
+
+class CartProduct(models.Model):
+    cart = models.ForeignKey(Cart,on_delete=models.CASCADE)
+    product = models.ManyToManyField(Product)
+    price = models.PositiveIntegerField()
+    quantity = models.PositiveIntegerField()
+    subtotal = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f"Cart=={self.cart.id}<==>CartProduct:{self.id}==Quantity=={self.quantity}"
+
+
+ORDER_STATUS = (
+    ("Order Received", "Order Received"),
+    ("Order Processing", "Order Processing"),
+    ("On the way", "On the way"),
+    ("Order Completed", "Order Completed"),
+    ("Order Canceled", "Order Canceled"),
+)
+
+class Order(models.Model):
+    cart  = models.OneToOneField(Cart,on_delete=models.CASCADE)
+    address = models.CharField(max_length=255)
+    mobile = models.CharField(max_length=16)
+    email = models.CharField(max_length=200)
+    total = models.PositiveIntegerField()
+    discount = models.PositiveIntegerField()
+    order_status = models.CharField(max_length=100,choices=ORDER_STATUS,default="Order Received")
+    payment_complete = models.BooleanField(default=False,blank=True, null=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)

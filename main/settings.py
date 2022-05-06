@@ -130,7 +130,7 @@ CORS_ORIGIN_WHITELIST = (
 CORS_ALLOWED_ORIGINS = [
     # 'http://localhost:3000',
 ]
-CORS_URLS_REGEX = r'^/api.*'
+# CORS_URLS_REGEX = r'^/api.*'
 # CORS_ORIGIN_ALLOW_ALL = True
 
 

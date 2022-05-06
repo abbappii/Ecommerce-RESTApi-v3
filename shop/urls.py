@@ -1,22 +1,20 @@
+from __future__ import barry_as_FLUFL
 from django.urls import path, include
-# from rest_framework import routers
-# from .views import *
+from rest_framework import routers
+from .views import *
 
-# route = routers.DefaultRouter()
-# route.register(
-#     #
-# )
 
-# example  direct
-# router.register(
-#     r'api', AllProductsViewSet, basename='allproducts'
-# )
-
-# example urlpatterns 
-# urlpatterns = [ 
-#     path('', include(route.urls))
-# ]
+router = routers.DefaultRouter()
+router.register('category', CategoryView, basename="CategoryView")
+router.register('mycart', MyCart, basename='mycart')
+router.register('oldorders', OldOrder, basename='oldorder')
 
 urlpatterns = [ 
+    path('',include(router.urls)),
+    path('product/', ProductView.as_view(), name='products'),
+    path('product/<int:id>/', ProductView.as_view(), name='product'),
+    path('profile/', ProfileView.as_view(), name="profile"),
+    path('userdataupdate/',UserDataUpdate.as_view(),name='udataupdate'),
+    path('profileimageupdata/', ProfileImageUpdate.as_view(),name="upimg"),
     
 ]
