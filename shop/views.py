@@ -1,4 +1,3 @@
-from ast import excepthandler
 from rest_framework import generics, mixins, viewsets
 from rest_framework.views import APIView
 from .serializers import *
@@ -126,15 +125,21 @@ class OldOrder(viewsets.ViewSet):
             cart_product_serializer = CartProductSerializer(cart_product,many=True)
             order['cart_product'] = cart_product_serializer.data
             all_data.append(order)
-
         return Response(all_data)
+
     def retrieve(self,request,pk=None):
-        query = Order.objects.get(id=pk)
-        serializer = OrderSerializer(query)
-        all_data = []
-        cartproduct = CartProduct.objects.filter(cart_id=serializer.data['cart']['id'])
-        cartproduct_serializer = CartProductSerializer(cartproduct,many=True)
-        serializer.data['cartproduct'] = cartproduct_serializer.data
-        all_data.append(serializer.data)
+        try:
+            query = Order.objects.get(id=pk)
+            serializer = OrderSerializer(query)
+            all_data = []
+            cartproduct = CartProduct.objects.filter(cart_id=serializer.data['cart']['id'])
+            cartproduct_serializer = CartProductSerializer(cartproduct,many=True)
+            serializer.data['cartproduct'] = cartproduct_serializer.data
+            all_data.append(serializer.data)
+            response_msg = {'error': False, 'data':all_data}
+        except:
+            response_msg = {'error': True, 'message':'not found'}
 
-        return Response(all_data)
+        return Response(response_msg)
+    
+# class AddToCart()

@@ -16,5 +16,6 @@ urlpatterns = [
     path('profile/', ProfileView.as_view(), name="profile"),
     path('userdataupdate/',UserDataUpdate.as_view(),name='udataupdate'),
     path('profileimageupdata/', ProfileImageUpdate.as_view(),name="upimg"),
+    # path('addtocart/',AddToCart.as_view(),name='addtocart'),
     
 ]
